@@ -1,48 +1,43 @@
 {
     "app-id": "com.github.muriloventuroso.pdftricks",
     "runtime": "org.freedesktop.Platform",
-    "runtime-version": "22.08",
+    "runtime-version": "24.08",
     "base": "io.elementary.BaseApp",
-    "base-version": "juno-22.08",
+    "base-version": "circe-24.08",
     "sdk": "org.freedesktop.Sdk",
     "command": "com.github.muriloventuroso.pdftricks",
+    "sdk-extensions": [
+        "org.freedesktop.Sdk.Extension.vala"
+    ],
+    "build-options": {
+        "append-path": "/usr/lib/sdk/vala/bin",
+        "prepend-ld-library-path": "/usr/lib/sdk/vala/lib"
+    },
     "finish-args": [
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",
         "--socket=wayland"
     ],
-
-    "modules": [{
-            "name": "libpng",
-            "config-opts": [
-                "--disable-static"
-            ],
-            "cleanup": [
-                "/bin",
-                "/include",
-                "/lib/pkgconfig",
-                "/share"
-            ],
-            "sources": [{
-                "__comment": "Must be version 1.2.x",
-                "type": "archive",
-                "url": "https://downloads.sourceforge.net/project/libpng/libpng12/1.2.59/libpng-1.2.59.tar.xz",
-                "sha256": "b4635f15b8adccc8ad0934eea485ef59cc4cae24d0f0300a9a941e51974ffcc7"
-            }]
-        },
+    "modules": [
         {
             "name": "ghostscript",
-            "config-opts": ["--disable-cups"],
+            "config-opts": [
+                "--disable-cups"
+            ],
             "build-options": {
-              "arch": {
-                "aarch64": {
-                  "cppflags": "-DPNG_ARM_NEON_OPT=0"
-                 }
-              }
+                "arch": {
+                    "aarch64": {
+                        "cppflags": "-DPNG_ARM_NEON_OPT=0"
+                    }
+                }
             },
-            "make-args": ["so"],
-            "make-install-args": ["soinstall"],
+            "make-args": [
+                "so"
+            ],
+            "make-install-args": [
+                "soinstall"
+            ],
             "cleanup": [
                 "/share/ghostscript/9.26/doc/",
                 "/share/ghostscript/9.26/examples",
@@ -74,14 +69,11 @@
                 "/bin/ps2ps2",
                 "/bin/unix-lpr.sh"
             ],
-            "sources": [{
-                    "type": "archive",
-                    "url": "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9540/ghostscript-9.54.0.tar.xz",
-                    "sha256": "c2b7b43cde600f4e70efb2cd95865f6d884a67315c3de235914697d8ccde6e3b"
-                },
+            "sources": [
                 {
-                    "type": "shell",
-                    "commands": ["rm -rf libpng/pngread.c"]
+                    "type": "archive",
+                    "url": "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10050/ghostpdl-10.05.0.tar.xz",
+                    "sha512": "01d59cd7e062f4653095f31d4648226a4d40627a99d3eae44f8f67a3cb586f013e9d37550a3485cd204beecddff1026307d3329f9025a9cd536fb54bfc37ba74"
                 }
             ]
         },
@@ -96,10 +88,11 @@
                 "--with-gvc=no",
                 "--enable-zero-configuration"
             ],
-            "sources": [{
+            "sources": [
+                {
                     "type": "archive",
-                    "url": "https://imagemagick.org/archive/ImageMagick-7.1.0-61.tar.xz",
-                    "sha256": "4b4f9437666ef1a87df69b34bc8abdf7ad05d524c00dd1d63f6699e6ab1ed94e"
+                    "url": "https://imagemagick.org/archive/ImageMagick-7.1.1-47.tar.xz",
+                    "sha256": "2396cd3c4237cfbc09a89d31d1cee157ee11fbc8ec1e540530e10175cb707160"
                 },
                 {
                     "type": "patch",
@@ -108,9 +101,21 @@
             ]
         },
         {
+            "name": "libgee",
+            "buildsystem": "autotools",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/libgee/0.20/libgee-0.20.8.tar.xz",
+                    "sha256": "189815ac143d89867193b0c52b7dc31f3aa108a15f04d6b5dca2b6adfad0b0ee"
+                }
+            ]
+        },
+        {
             "name": "pdftricks",
             "buildsystem": "meson",
-            "sources": [{
+            "sources": [
+                {
                     "type": "archive",
                     "url": "https://github.com/muriloventuroso/pdftricks/archive/0.4.1.tar.gz",
                     "sha256": "4b0fa5d73621ef42d6d0040ec2147a43bae2337ea722651525f080f2ae78bea3"
