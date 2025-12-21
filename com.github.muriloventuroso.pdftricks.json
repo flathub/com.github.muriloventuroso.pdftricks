@@ -1,10 +1,17 @@
 {
     "app-id": "com.github.muriloventuroso.pdftricks",
     "runtime": "org.freedesktop.Platform",
-    "runtime-version": "22.08",
+    "runtime-version": "25.08",
     "base": "io.elementary.BaseApp",
-    "base-version": "juno-22.08",
+    "base-version": "circe-25.08",
     "sdk": "org.freedesktop.Sdk",
+    "sdk-extensions": [
+        "org.freedesktop.Sdk.Extension.vala"
+    ],
+    "build-options": {
+        "prepend-path": "/usr/lib/sdk/vala/bin/",
+        "prepend-ld-library-path": "/usr/lib/sdk/vala/lib"
+    },
     "command": "com.github.muriloventuroso.pdftricks",
     "finish-args": [
         "--share=ipc",
@@ -12,40 +19,48 @@
         "--device=dri",
         "--socket=wayland"
     ],
-
-    "modules": [{
-            "name": "libpng",
-            "config-opts": [
-                "--disable-static"
-            ],
-            "cleanup": [
-                "/bin",
-                "/include",
-                "/lib/pkgconfig",
-                "/share"
-            ],
+    "cleanup" : [
+        "/include",
+        "/lib/girepository-1.0",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/ghostscript",
+        "/share/gir-1.0",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "/share/vala",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
+        {
+            "name": "libgee",
             "sources": [{
-                "__comment": "Must be version 1.2.x",
                 "type": "archive",
-                "url": "https://downloads.sourceforge.net/project/libpng/libpng12/1.2.59/libpng-1.2.59.tar.xz",
-                "sha256": "b4635f15b8adccc8ad0934eea485ef59cc4cae24d0f0300a9a941e51974ffcc7"
+                "url": "https://download.gnome.org/sources/libgee/0.20/libgee-0.20.8.tar.xz",
+                "sha256": "189815ac143d89867193b0c52b7dc31f3aa108a15f04d6b5dca2b6adfad0b0ee"
             }]
         },
         {
             "name": "ghostscript",
-            "config-opts": ["--disable-cups"],
+            "config-opts": [
+                "--disable-cups",
+                "--without-tesseract"
+            ],
             "build-options": {
-              "arch": {
-                "aarch64": {
-                  "cppflags": "-DPNG_ARM_NEON_OPT=0"
-                 }
-              }
+                "arch": {
+                    "aarch64": {
+                        "cppflags": "-DPNG_ARM_NEON_OPT=0"
+                    }
+                }
             },
             "make-args": ["so"],
             "make-install-args": ["soinstall"],
             "cleanup": [
-                "/share/ghostscript/9.26/doc/",
-                "/share/ghostscript/9.26/examples",
+                "/share/ghostscript/*/doc/",
+                "/share/ghostscript/*/examples",
                 "/share/man/",
                 "/bin/dvipdf",
                 "/bin/font2c",
@@ -74,14 +89,11 @@
                 "/bin/ps2ps2",
                 "/bin/unix-lpr.sh"
             ],
-            "sources": [{
-                    "type": "archive",
-                    "url": "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9540/ghostscript-9.54.0.tar.xz",
-                    "sha256": "c2b7b43cde600f4e70efb2cd95865f6d884a67315c3de235914697d8ccde6e3b"
-                },
+            "sources": [
                 {
-                    "type": "shell",
-                    "commands": ["rm -rf libpng/pngread.c"]
+                    "type": "archive",
+                    "url": "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10060/ghostscript-10.06.0.tar.xz",
+                    "sha256": "64352648c2c081c8a9fb1a12dc1965e01ead7c57f58b72d1b54f6ef1cef3c561"
                 }
             ]
         },
@@ -98,8 +110,8 @@
             ],
             "sources": [{
                     "type": "archive",
-                    "url": "https://imagemagick.org/archive/ImageMagick-7.1.0-61.tar.xz",
-                    "sha256": "4b4f9437666ef1a87df69b34bc8abdf7ad05d524c00dd1d63f6699e6ab1ed94e"
+                    "url": "https://imagemagick.org/archive/ImageMagick-7.1.2-11.tar.xz",
+                    "sha256": "9955090ece3fe283e98e175e2a22a23a61e92b16708e11bc69e068a5f4948f4a"
                 },
                 {
                     "type": "patch",
@@ -119,9 +131,19 @@
                     "type": "patch",
                     "paths": [
                         "patches/apply-eos-theme.patch",
-                        "patches/pdftricks-meson.patch"
+                        "patches/pdftricks-meson.patch",
+                        "patches/fix_appdata.patch"
                     ]
                 }
+            ],
+            "post-install": [
+                "mkdir -p /app/share/icons/hicolor/scalable/apps",
+                "mv /app/share/icons/hicolor/128x128@2/apps/compress-pdf.svg /app/share/icons/hicolor/scalable/apps/compress-pdf.svg",
+                "mv /app/share/icons/hicolor/128x128@2/apps/merge-pdf.svg /app/share/icons/hicolor/scalable/apps/merge-pdf.svg",
+                "mv /app/share/icons/hicolor/128x128@2/apps/pdf-convert.svg /app/share/icons/hicolor/scalable/apps/pdf-convert.svg",
+                "mv /app/share/icons/hicolor/128x128@2/apps/split-pdf.svg /app/share/icons/hicolor/scalable/apps/split-pdf.svg",
+                "mv /app/share/icons/hicolor/128x128/apps/${FLATPAK_ID}.svg /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg",
+                "find /app/share/icons/hicolor -type f -not -path \"*scalable*\" -not -path \"*actions*\" -name \"*.svg\" -delete"
             ]
         }
     ]
