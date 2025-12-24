@@ -1,0 +1,87 @@
+From d4f0d64f139371e842225fd1e614c5f0fac66753 Mon Sep 17 00:00:00 2001
+From: Sabri Ünal <yakushabb@gmail.com>
+Date: Fri, 19 Dec 2025 18:13:27 +0300
+Subject: [PATCH] Fix appdata papercuts
+
+---
+ data/com.github.muriloventuroso.pdftricks.appdata.xml.in | 36 ++++--------------------------------
+ data/com.github.muriloventuroso.pdftricks.desktop.in     |  2 +-
+ 2 files changed, 5 insertions(+), 33 deletions(-)
+
+diff --git a/data/com.github.muriloventuroso.pdftricks.appdata.xml.in b/data/com.github.muriloventuroso.pdftricks.appdata.xml.in
+index aa5836a..fd3d636 100644
+--- a/data/com.github.muriloventuroso.pdftricks.appdata.xml.in
++++ b/data/com.github.muriloventuroso.pdftricks.appdata.xml.in
+@@ -1,12 +1,10 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!-- Copyright 2018 MuriloVenturoso <muriloventuroso@gmail.com> -->
+-<component type="desktop">
++<component type="desktop-application">
+   <id>com.github.muriloventuroso.pdftricks</id>
+   <metadata_license>CC0-1.0</metadata_license>
+   <project_group>MuriloVenturoso</project_group>
+   <project_license>GPL-3.0+</project_license>
+-  <value key="x-appcenter-suggested-price">1</value>
+-  <value key="x-appcenter-stripe">pk_live_8nDudUPTmiwzRlzvKulsBlVm</value>
+   <name>PDF Tricks</name>
+   <summary>Tricks for PDF Files</summary>
+   <description>
+@@ -136,39 +134,13 @@
+   <provides>
+     <binary>com.github.muriloventuroso.pdftricks</binary>
+   </provides>
+-  <content_rating type="oars-1.1">
+-    <content_attribute id="violence-cartoon">none</content_attribute>
+-    <content_attribute id="violence-fantasy">none</content_attribute>
+-    <content_attribute id="violence-realistic">none</content_attribute>
+-    <content_attribute id="violence-bloodshed">none</content_attribute>
+-    <content_attribute id="violence-sexual">none</content_attribute>
+-    <content_attribute id="violence-desecration">none</content_attribute>
+-    <content_attribute id="violence-slavery">none</content_attribute>
+-    <content_attribute id="violence-worship">none</content_attribute>
+-    <content_attribute id="drugs-alcohol">none</content_attribute>
+-    <content_attribute id="drugs-narcotics">none</content_attribute>
+-    <content_attribute id="drugs-tobacco">none</content_attribute>
+-    <content_attribute id="sex-nudity">none</content_attribute>
+-    <content_attribute id="sex-themes">none</content_attribute>
+-    <content_attribute id="sex-homosexuality">none</content_attribute>
+-    <content_attribute id="sex-prostitution">none</content_attribute>
+-    <content_attribute id="sex-adultery">none</content_attribute>
+-    <content_attribute id="sex-appearance">none</content_attribute>
+-    <content_attribute id="language-profanity">none</content_attribute>
+-    <content_attribute id="language-humor">none</content_attribute>
+-    <content_attribute id="language-discrimination">none</content_attribute>
+-    <content_attribute id="social-chat">none</content_attribute>
+-    <content_attribute id="social-info">none</content_attribute>
+-    <content_attribute id="social-audio">none</content_attribute>
+-    <content_attribute id="social-location">none</content_attribute>
+-    <content_attribute id="social-contacts">none</content_attribute>
+-    <content_attribute id="money-purchasing">none</content_attribute>
+-    <content_attribute id="money-gambling">none</content_attribute>
+-  </content_rating>
++  <content_rating type="oars-1.1" />
+   <developer_name>Murilo Venturoso</developer_name>
+   <url type="homepage">https://github.com/muriloventuroso/pdftricks</url>
+   <url type="bugtracker">https://github.com/muriloventuroso/pdftricks/issues</url>
+   <url type="translate">https://hosted.weblate.org/projects/pdftricks</url>
++  <url type="vcs-browser">https://github.com/muriloventuroso/pdftricks</url>
++  <launchable type="desktop-id">com.github.muriloventuroso.pdftricks.desktop</launchable>
+   <custom>
+     <value key="x-appcenter-color-primary">#F6546A</value>
+     <value key="x-appcenter-color-primary-text">#fff</value>
+diff --git a/data/com.github.muriloventuroso.pdftricks.desktop.in b/data/com.github.muriloventuroso.pdftricks.desktop.in
+index a5b9cf8..450acbd 100644
+--- a/data/com.github.muriloventuroso.pdftricks.desktop.in
++++ b/data/com.github.muriloventuroso.pdftricks.desktop.in
+@@ -5,7 +5,7 @@ GenericName[lt]=Patarimai ir triukai PDF failams
+ Comment=A simple, efficient app for small manipulation of PDF files. Compress, split, merge and convert PDF.
+ Comment[nb_NO]=Et lite og formålstjenlig program for å utføre små endringer på PDF-filer. Pakk sammen, del opp, flett og koverter PDF.
+ Comment[lt]=Paprasta, efektyvi programa, skirta valdymui PDF failuose. Glaudinti, padalyti, sulieti ir konvertuoti PDF.
+-Categories=GTK;Utility;Publishing;
++Categories=Utility;Publishing;
+ Exec=com.github.muriloventuroso.pdftricks
+ Icon=com.github.muriloventuroso.pdftricks
+ Terminal=false
+--
+libgit2 1.7.2
+
