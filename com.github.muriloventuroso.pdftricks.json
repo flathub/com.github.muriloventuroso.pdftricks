@@ -19,20 +19,20 @@
         "--device=dri",
         "--socket=wayland"
     ],
-    "cleanup" : [
-        "/include",
-        "/lib/girepository-1.0",
-        "/lib/pkgconfig",
-        "/man",
+    "cleanup": [
         "/share/doc",
         "/share/ghostscript",
-        "/share/gir-1.0",
-        "/share/gtk-doc",
         "/share/man",
-        "/share/pkgconfig",
-        "/share/vala",
         "*.la",
         "*.a"
+    ],
+    "cleanup-commands": [
+        "rm -rf /app/include",
+        "rm -rf /app/lib/girepository-1.0",
+        "rm -rf /app/lib/libsass.*",
+        "rm -rf /app/lib/pkgconfig",
+        "rm -rf /app/share/gir-1.0",
+        "rm -rf /app/share/vala"
     ],
     "modules": [
         {
@@ -48,12 +48,13 @@
                     }
                 }
             },
-            "make-args": ["so"],
-            "make-install-args": ["soinstall"],
+            "make-args": [
+                "so"
+            ],
+            "make-install-args": [
+                "soinstall"
+            ],
             "cleanup": [
-                "/share/ghostscript/*/doc/",
-                "/share/ghostscript/*/examples",
-                "/share/man/",
                 "/bin/dvipdf",
                 "/bin/font2c",
                 "/bin/gsbj",
@@ -84,8 +85,14 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10060/ghostscript-10.06.0.tar.xz",
-                    "sha256": "64352648c2c081c8a9fb1a12dc1965e01ead7c57f58b72d1b54f6ef1cef3c561"
+                    "url": "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10071/ghostscript-10.07.1.tar.gz",
+                    "sha256": "2fc74362f9be6fae1b0a65d38fdcfd4f0b518cc3b07c5581fb661eb4d2e15251",
+                    "__x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 1157,
+                        "stable-only": true,
+                        "url-template": "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${major}0$minor$patch/ghostscript-$version.tar.gz"
+                    }
                 }
             ]
         },
@@ -100,10 +107,17 @@
                 "--with-gvc=no",
                 "--enable-zero-configuration"
             ],
-            "sources": [{
+            "sources": [
+                {
                     "type": "archive",
-                    "url": "https://imagemagick.org/archive/ImageMagick-7.1.2-11.tar.xz",
-                    "sha256": "9955090ece3fe283e98e175e2a22a23a61e92b16708e11bc69e068a5f4948f4a"
+                    "url": "https://github.com/ImageMagick/ImageMagick/archive/7.1.2-23.tar.gz",
+                    "sha256": "f129f7d87fc21da453d032dd291b80ea13faf2497f13ef8279d97759ed7d5c46",
+                    "__x-checker-data": {
+                        "type": "anitya",
+                        "project-id": 1372,
+                        "stable-only": true,
+                        "url-template": "https://github.com/ImageMagick/ImageMagick/archive/$version.tar.gz"
+                    }
                 },
                 {
                     "type": "patch",
@@ -114,19 +128,8 @@
         {
             "name": "pdftricks",
             "buildsystem": "meson",
-            "sources": [{
-                    "type": "archive",
-                    "url": "https://github.com/muriloventuroso/pdftricks/archive/0.4.1.tar.gz",
-                    "sha256": "4b0fa5d73621ef42d6d0040ec2147a43bae2337ea722651525f080f2ae78bea3"
-                },
-                {
-                    "type": "patch",
-                    "paths": [
-                        "patches/apply-eos-theme.patch",
-                        "patches/pdftricks-meson.patch",
-                        "patches/fix_appdata.patch"
-                    ]
-                }
+            "license-files": [
+                "debian/copyright"
             ],
             "post-install": [
                 "mkdir -p /app/share/icons/hicolor/scalable/apps",
@@ -136,6 +139,22 @@
                 "mv /app/share/icons/hicolor/128x128@2/apps/split-pdf.svg /app/share/icons/hicolor/scalable/apps/split-pdf.svg",
                 "mv /app/share/icons/hicolor/128x128/apps/${FLATPAK_ID}.svg /app/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg",
                 "find /app/share/icons/hicolor -type f -not -path \"*scalable*\" -not -path \"*actions*\" -name \"*.svg\" -delete"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/muriloventuroso/pdftricks.git",
+                    "//note": "Use the latest commit from repository to get translation updates",
+                    "commit": "7cad1fe906b3298461a3a43b405070a3a344bc8f"
+                },
+                {
+                    "type": "patch",
+                    "paths": [
+                        "patches/apply-eos-theme.patch",
+                        "patches/pdftricks-meson.patch",
+                        "patches/fix_appdata.patch"
+                    ]
+                }
             ]
         }
     ]
